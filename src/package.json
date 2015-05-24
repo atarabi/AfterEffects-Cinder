@@ -1,0 +1,15 @@
+{
+  "name": "AfterEffects-Cinder",
+  "version": "1.0.0",
+  "description": "Communicate width a Cinder application",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kareobana",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "object-assign": "^2.0.0",
+    "osc-min": "^0.2.0"
+  }
+}

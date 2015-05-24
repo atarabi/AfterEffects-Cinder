@@ -1,0 +1,65 @@
+body {
+  color: #FFFFFF;
+  background: #262626;
+  min-width: 280px;
+  min-height: 200px;
+  overflow: hidden;
+  margin: 8px;
+}
+
+label {
+  display: inline-block;
+  width: 56px;
+  font-size: 16px;
+}
+
+input[type="text"] {
+  width: 180px;
+  color: #262626;
+  background: #FFFFFF;
+}
+
+input[type="text"] + input[type="button"] {
+  width: 20px;
+}
+
+input[type="button"] {
+  width: 80px;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  background: transparent;
+  transition: 0.2s;
+}
+
+input[type="button"]:hover {
+  cursor: pointer;
+  color: #262626;
+  background: #FFFFFF;
+}
+
+input[type="button"]:disabled {
+  cursor: default;
+  color: #999;
+  background: transparent;
+}
+
+.wrapper {
+  display: inline-block;
+}
+
+.infos {
+  width: 100%;
+}
+
+.progress {
+  margin-top: 5px;
+  width: 0;
+  height: 3px;
+  background: #FFFFFF;
+}
+
+.info {
+  width: 100%;
+  text-align: right;
+  font-size: 14px;
+}

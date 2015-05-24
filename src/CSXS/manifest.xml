@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ExtensionManifest Version="5.0" ExtensionBundleId="com.atarabi.AfterEffects.Cinder" ExtensionBundleVersion="0.1" ExtensionBundleName="AfterEffects-Cinder" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Author>
+    <![CDATA[Atarabi]]>
+  </Author>
+  <ExtensionList>
+    <Extension Id="com.atarabi.AfterEffects.Cinder.extension1" Version="0.1" />
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="AEFT" Version="13.2" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="5.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.atarabi.AfterEffects.Cinder.extension1">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <ScriptPath>./MainScript.jsx</ScriptPath>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Cinder</Menu>
+          <Geometry>
+            <Size>
+              <Height>160</Height>
+              <Width>280</Width>
+            </Size>
+            <MinSize>
+              <Height>160</Height>
+              <Width>280</Width>
+            </MinSize>
+            <MaxSize>
+              <Height>160</Height>
+              <Width>280</Width>
+            </MaxSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
