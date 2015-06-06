@@ -153,7 +153,7 @@ function processArgs(type, args) {
         value = !!args.shift().value;
         result.push({
           index: index,
-          value: value
+          value: value,
         });
       }
       break;
@@ -163,7 +163,7 @@ function processArgs(type, args) {
         value = args.shift().value;
         result.push({
           index: index,
-          value: value
+          value: value,
         });
       }
       break;
@@ -173,7 +173,7 @@ function processArgs(type, args) {
         value = [args.shift().value, args.shift().value];
         result.push({
           index: index,
-          value: value
+          value: value,
         });
       }
       break;
@@ -183,7 +183,7 @@ function processArgs(type, args) {
         value = [args.shift().value, args.shift().value, args.shift().value];
         result.push({
           index: index,
-          value: value
+          value: value,
         });
       }
       break;
@@ -193,7 +193,20 @@ function processArgs(type, args) {
         value = [args.shift().value, args.shift().value, args.shift().value];
         result.push({
           index: index,
-          value: value
+          value: value,
+        });
+      }
+      break;
+    case 'camera':
+      while (args.length) {
+        index = args.shift().value;
+        result.push({
+          index: index,
+          value: {
+            position: [args.shift().value, args.shift().value, args.shift().value],
+            orientation: [args.shift().value, args.shift().value, args.shift().value],
+            zoom: args.shift().value,
+          },
         });
       }
       break;
@@ -390,7 +403,6 @@ $._ext = {
       });
     }
 
-
     var fps = data.fps,
     frame_duration = 1 / fps,
     duration = data.duration,
@@ -478,23 +490,48 @@ $._ext = {
     writeComment(layer, comment);
     layer.source.mainSource.reload();
 
-    var setters = data.setters;
+    var setters = data.setters,
+    comp = layer.containingComp,
+    frame_duration = comp.frameDuration,
+    in_point = layer.inPoint;
 
     for (var name in setters) {
       var type = setters[name].type,
-      effect = addEffect(layer, name, convertType(type)).effect;
+      args = processArgs(type, setters[name].args);
 
-      var args = processArgs(type, setters[name].args),
-      property = effect.property(1),
-      frame_duration = layer.containingComp.frameDuration,
-      in_point = layer.inPoint;
+      if (type === 'camera') {
+        var camera = comp.layers.addCamera('Cinder Camera', [0.5 * comp.width, 0.5 * comp.height]),
+        transform = camera.property('ADBE Transform Group'),
+        position = transform.property('ADBE Position'),
+        orientation = transform.property('ADBE Orientation'),
+        camera_options = camera.property('ADBE Camera Options Group'),
+        zoom = camera_options.property('ADBE Camera Zoom');
 
-      for (var i = 0, l = args.length; i < l; i++) {
-        var arg = args[i],
-        index = arg.index,
-        time = in_point + index * frame_duration,
-        value = arg.value;
-        property.setValueAtTime(time, value);
+        camera.autoOrient = AutoOrientType.NO_AUTO_ORIENT;
+        camera.inPoint = layer.inPoint;
+        camera.outPoint = layer.outPoint;
+
+        for (var i = 0, l = args.length; i < l; i++) {
+          var arg = args[i],
+          index = arg.index,
+          time = in_point + index * frame_duration,
+          value = arg.value;
+          position.setValueAtTime(time, value.position);
+          orientation.setValueAtTime(time, value.orientation);
+          zoom.setValueAtTime(time, value.zoom);
+        }
+
+      } else {
+        var effect = addEffect(layer, name, convertType(type)).effect,
+        property = effect.property(1);
+
+        for (var i = 0, l = args.length; i < l; i++) {
+          var arg = args[i],
+          index = arg.index,
+          time = in_point + index * frame_duration,
+          value = arg.value;
+          property.setValueAtTime(time, value);
+        }
       }
     }
 
