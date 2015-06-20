@@ -215,17 +215,29 @@ function processArgs(type, args) {
 }
 
 function readComment(layer) {
-  var result = {};
+  var comment = {};
   try {
-    result = JSON.parse(layer.comment);
+    comment = JSON.parse(layer.comment);
+    comment = comment['Cinder'] || {};
   } catch (e) {
     //pass
   }
-  return result;
+  return comment;
 }
 
 function writeComment(layer, obj) {
-  layer.comment = JSON.stringify(obj);
+  var comment = layer.comment;
+  try {
+    comment = JSON.parse(comment);
+  } catch (e) {
+    if (comment) {
+      comment.comment = comment;
+    } else {
+      comment = {};
+    }
+  }
+  comment['Cinder'] = obj;
+  layer.comment = JSON.stringify(comment);
 }
 
 $._ext = {
@@ -280,7 +292,7 @@ $._ext = {
     }
 
     var folder = Folder(folder_path);
-    if (folder instanceof File || !folder.exists) {
+    if (folder instanceof File || (!folder.exists && !folder.create())) {
       return encode({
         err: 'Folder doesn\'t exist',
         data: null
